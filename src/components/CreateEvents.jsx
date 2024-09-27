@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -10,7 +10,7 @@ const CreateEvents = () => {
     time: "",
     location: "",
   });
-  
+
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -34,7 +34,7 @@ const CreateEvents = () => {
           },
         }
       );
-      
+
       if (response.status === 201) {
         navigate("/"); // Redirect after successful creation
       }
@@ -42,6 +42,15 @@ const CreateEvents = () => {
       setError("Failed to create event. Please check the details.");
     }
   };
+
+  const [isDisabled, setIsDisabled] = useState(true);
+
+  useEffect(() => {
+    const userId = localStorage.getItem('userId');
+    if (userId) {
+      setIsDisabled(false); // Enable button if userId exists in localStorage
+    }
+  }, []); // Empty dependency array means this runs once when the component mounts
 
   return (
     <div className="container mx-auto px-4 py-8 flex min-h-[90vh]">
@@ -103,7 +112,12 @@ const CreateEvents = () => {
               className="mt-1 block w-full p-2 border border-gray-300 rounded"
             />
           </div>
-          <button type="submit" className="mt-4 w-full bg-blue-500 text-white p-2 rounded">
+          <button
+            type="submit"
+            className={`mt-4 w-full p-2 rounded ${isDisabled ? 'bg-gray-400' : 'bg-blue-500 text-white'
+              }`}
+            disabled={isDisabled}
+          >
             Create Event
           </button>
         </form>
