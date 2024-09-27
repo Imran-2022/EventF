@@ -94,10 +94,8 @@ const Profile = () => {
 
   return (
     <div className="container mx-auto px-4 py-8 min-h-[90vh]">
-      <h2 className="text-2xl font-bold mb-4">My Profile</h2>
-
       {/* Profile Details */}
-      <div className="mb-8">
+      <div className="mb-8 mt-8">
         <h3 className="text-xl font-semibold mb-2">Profile Details</h3>
         {!editing ? (
           <div>
