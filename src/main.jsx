@@ -14,6 +14,7 @@ import Forget from './components/Auth/Forget';
 import About from './components/About';
 import Events from './components/Events';
 import CreateEvents from './components/CreateEvents';
+import EditEvent from './components/EditEvent';
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
       {
         path: '/about',
         element: <About/>
+      }, 
+      {
+        path: '/edit-event/:eventId',
+        element: <EditEvent/>
       }, 
       {
         path: '/login',

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const [user, setUser] = useState({ username: "", email: "" });
@@ -7,7 +8,7 @@ const Profile = () => {
   const [newUsername, setNewUsername] = useState("");
   const [newEmail, setNewEmail] = useState("");
   const [events, setEvents] = useState([]);
-
+  const navigate = useNavigate();
   const userId = localStorage.getItem("userId");
 
   useEffect(() => {
@@ -83,6 +84,13 @@ const Profile = () => {
       console.error("Failed to delete event:", error);
     }
   };
+
+
+  const handleEditEvent = (eventId) => {
+    navigate(`/edit-event/${eventId}`); // Navigate to the edit page with the event ID
+  };
+
+
 
   return (
     <div className="container mx-auto px-4 py-8 min-h-[90vh]">
