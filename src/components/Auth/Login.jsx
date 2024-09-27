@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Link,useNavigate  } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import * as jwt_decode from 'jwt-decode'; // Correct import statement
+
 const Login = () => {
-    // console.log(import.meta.env.VITE_ENDPOINT)
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const [inputs, setInputs] = useState({
-        username: "",
+        email: "",
         password: "",
     });
 
@@ -14,39 +15,43 @@ const Login = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Handle login logic
-        const {username,password} = inputs;
-        // console.log({username,password})
+        const { email, password } = inputs;
 
-        fetch(`${import.meta.env.VITE_ENDPOINT}/tutor/login/`,{
-            method:'POST',
+        fetch(`${import.meta.env.VITE_ENDPOINT}/user/auth`, {
+            method: 'POST',
             headers: {
-                'Content-Type': 'application/json', // Note the quotes around 'Content-Type'
-              },
-              body: JSON.stringify({username,password}),
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, password }),
         })
-        .then(res=>res.json())
-        .then(data=>{
-            console.log(data)
-            localStorage.setItem('token',data.token)
-            localStorage.setItem('user_id',data.user_id)
-            if(data.user_id){
+        .then(res => res.json())
+        .then(data => {
+            console.log(data);
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('userId', data.user._id);
+            if (data.user._id) {
                 navigate('/profile');
             }
+            let decoded = jwt_decode.jwtDecode(data.token); // No change needed here
+            const expirationTime = new Date(decoded.exp * 1000);
+            localStorage.setItem('expiration time', expirationTime);
         })
+        .catch(error => {
+            console.error('Error during login:', error);
+        });
     };
 
     return (
         <div className="py-10 flex items-center justify-center min-h-[85vh]">
             <form className="flex flex-col bg-white rounded shadow-lg p-12 w-96" onSubmit={handleSubmit}>
-                <label className="font-semibold text-xs" htmlFor="usernameField">username</label>
+                <label className="font-semibold text-xs" htmlFor="emailField">Email</label>
                 <input
                     className="h-12 px-4 border shadow mt-2 rounded focus:outline-none focus:ring-2"
                     type="text"
-                    name="username"
-                    value={inputs.username}
+                    name="email"
+                    value={inputs.email}
                     onChange={handleChange}
-                    placeholder="Enter your username"
+                    placeholder="Enter your email"
                     required
                 />
                 <label className="font-semibold text-xs mt-3" htmlFor="passwordField">Password</label>

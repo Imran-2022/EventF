@@ -33,8 +33,8 @@ const Register = () => {
 
         // console.log({username, first_name,last_name,email, password, confirm_password })
 
-        const info={username,email, password, confirm_password };
-        fetch(`${import.meta.env.VITE_ENDPOINT}/tutor/register/`, {
+        const info={username,email, password};
+        fetch(`${import.meta.env.VITE_ENDPOINT}/user`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json', // Note the quotes around 'Content-Type'
@@ -47,6 +47,10 @@ const Register = () => {
                 if(data?.username){
                     toast.error(data?.username[0]);
                 }else{
+
+                    // localStorage.setItem('token',data.token);
+                    // localStorage.setItem('user',data.user);
+
                     toast.success("Check your mail for confirmation");
                     setTimeout(() => navigate('/login'), 6000);
                 }
