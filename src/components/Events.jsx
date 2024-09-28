@@ -34,10 +34,17 @@ const Events = () => {
     );
   });
 
+  const truncateDescription = (description) => {
+    const words = description.split(' ');
+    if (words.length > 100) {
+      return words.slice(0, 100).join(' ') + '...';
+    }
+    return description;
+  };
+
   return (
     <div className="container mx-auto px-4 py-8 flex flex-col min-h-[90vh]">
       <div className="w-full mb-8">
-        <h2 className="text-3xl font-bold text-center">All Events</h2>
         
         {loading && <p className="text-center">Loading...</p>}
         {error && <p className="text-red-500 text-center">{error}</p>}
@@ -58,19 +65,20 @@ const Events = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredEvents.map(event => (
-          <div
-            key={event._id}
-            className="shadow-lg rounded-lg p-4 bg-white transition-transform transform hover:scale-105"
-          >
-            <h3 className="text-xl font-semibold">{event.title}</h3>
-            <p className="text-gray-700">{event.description}</p>
-            <p className="text-gray-500 mt-1">Date: {new Date(event.date).toLocaleDateString()}</p>
-            <p className="text-gray-500 mt-1">Time: {event.time}</p>
-            <p className="text-gray-500 mt-1">Location: {event.location}</p>
-          </div>
-        ))}
-      </div>
+  {filteredEvents.map(event => (
+    <div
+      key={event._id}
+      className="border border-gray-300 rounded-lg p-4 bg-white transition-transform transform hover:scale-105"
+    >
+      <h3 className="text-2xl font-bold text-gray-800">{event.title}</h3>
+      <p className="text-gray-700 mt-2 text-justify">{truncateDescription(event.description)}</p>
+      <p className="text-gray-500 mt-1"><span className="font-bold">Date:</span> {new Date(event.date).toLocaleDateString()}</p>
+      <p className="text-gray-500 mt-1"><span className="font-bold">Time:</span> {event.time}</p>
+      <p className="text-gray-500 mt-1"><span className="font-bold">Location:</span> {event.location}</p>
+    </div>
+  ))}
+</div>
+
     </div>
   );
 };
