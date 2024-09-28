@@ -9,7 +9,7 @@ const Events = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await fetch("http://localhost:3001/event/all");
+        const response = await fetch(`${import.meta.env.VITE_ENDPOINT}/event/all`);
         if (!response.ok) {
           throw new Error("Failed to fetch events");
         }
